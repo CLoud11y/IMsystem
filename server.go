@@ -79,7 +79,7 @@ func (server *Server) Handler(conn net.Conn) {
 	}()
 
 	//超时强踢
-	timeout := 10
+	timeout := 100
 	for {
 		select {
 		case flag := <-isActive:
@@ -98,7 +98,7 @@ func (server *Server) Handler(conn net.Conn) {
 }
 
 func (server *Server) Brodcast(user *User, msg string) {
-	sendMsg := "[" + user.Addr + "]" + user.Name + msg
+	sendMsg := "[" + user.Name + "]" + " to all: " + msg
 	server.Message <- sendMsg
 }
 
