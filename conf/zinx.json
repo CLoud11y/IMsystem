@@ -6,5 +6,6 @@
     "WorkerPoolSize":10,
     "LogDir": "./mylog",
     "LogFile":"system.log",
-    "LogDebugClose":true
+    "LogDebugClose":true,
+    "RouterSlicesMode":false
 }

@@ -53,3 +53,20 @@ func (um *userManager) GetAllUsers() []*User {
 	}
 	return users
 }
+
+func (um *userManager) RenameUser(user *User, newName string) bool {
+	um.mapLock.Lock()
+	defer um.mapLock.Unlock()
+
+	_, ok := um.onlineMap[newName]
+	if ok {
+		// 新用户名已存在 修改失败
+		return false
+	}
+
+	// 修改用户名
+	delete(um.onlineMap, user.Name)
+	user.Name = newName
+	um.onlineMap[user.Name] = user
+	return true
+}

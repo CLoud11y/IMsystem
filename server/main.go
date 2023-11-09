@@ -16,6 +16,7 @@ func main() {
 	server.SetOnConnStop(DoConnectionLost)
 	server.AddRouter(common.MsgIdPing, &router.PingRouter{})
 	server.AddRouter(common.MsgIdWho, &router.WhoRouter{})
+	server.AddRouter(common.MsgIdRename, &router.RenameRouter{})
 	server.Serve()
 }
 
@@ -43,6 +44,6 @@ func DoConnectionLost(conn ziface.IConnection) {
 func Broadcast(msg string) {
 	users := usr.UserManager.GetAllUsers()
 	for _, each := range users {
-		each.Conn.SendMsg(common.MsgIdBroadcast, []byte(msg))
+		each.Conn.SendMsg(common.MsgIdShow, []byte(msg))
 	}
 }

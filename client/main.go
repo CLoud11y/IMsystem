@@ -24,7 +24,11 @@ func waitingInput(conn ziface.IConnection) {
 		if !ok {
 			continue
 		}
-		err := conn.SendMsg(msgId, []byte(input))
+		msg := ""
+		if len(splited) > 1 {
+			msg = strings.Join(splited[1:], " ")
+		}
+		err := conn.SendMsg(msgId, []byte(msg))
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -45,9 +49,7 @@ func main() {
 	//设置链接建立成功后的钩子函数
 	client.SetOnConnStart(onClientStart)
 
-	client.AddRouter(common.MsgIdPong, &router.PongRouter{})
-	client.AddRouter(common.MsgIdWho, &router.WhoRouter{})
-	client.AddRouter(common.MsgIdBroadcast, &router.MyBaseRouter{})
+	client.AddRouter(common.MsgIdShow, &router.MyBaseRouter{})
 
 	//启动客户端
 	client.Start()
