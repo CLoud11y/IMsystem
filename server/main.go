@@ -17,6 +17,7 @@ func main() {
 	server.AddRouter(common.MsgIdPing, &router.PingRouter{})
 	server.AddRouter(common.MsgIdWho, &router.WhoRouter{})
 	server.AddRouter(common.MsgIdRename, &router.RenameRouter{})
+	server.AddRouter(common.MsgIdPublic, &router.PublicRouter{})
 	server.Serve()
 }
 

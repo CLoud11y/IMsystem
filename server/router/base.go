@@ -14,5 +14,5 @@ type MyBaseRouter struct {
 
 func (r *MyBaseRouter) PreHandle(request ziface.IRequest) {
 	//读取客户端的数据
-	fmt.Println("PreHandle: recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
+	fmt.Printf("PreHandle: recv from client[%s]: msgId=%d, data=%s\n", request.GetConnection().RemoteAddrString(), request.GetMsgID(), string(request.GetData()))
 }

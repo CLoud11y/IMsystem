@@ -5,6 +5,7 @@ const (
 	MsgIdPing uint32 = iota
 	MsgIdWho
 	MsgIdRename
+	MsgIdPublic
 	// server to client
 	MsgIdShow
 )
@@ -17,6 +18,7 @@ func init() {
 		"ping":   MsgIdPing,
 		"who":    MsgIdWho,
 		"rename": MsgIdRename,
+		"public": MsgIdPublic,
 	}
 	InstructionMap = m
 }
