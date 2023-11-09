@@ -42,18 +42,32 @@ func onClientStart(conn ziface.IConnection) {
 	go waitingInput(conn)
 }
 
+// 创建连接的时候执行
+func onClientStop(conn ziface.IConnection) {
+	fmt.Println("connection is closed ... ")
+	done <- true
+}
+
+var done chan bool
+
+func init() {
+	done = make(chan bool)
+}
+
 func main() {
 	//创建Client客户端
 	client := znet.NewClient("127.0.0.1", 8888)
 
 	//设置链接建立成功后的钩子函数
 	client.SetOnConnStart(onClientStart)
+	client.SetOnConnStop(onClientStop)
 
 	client.AddRouter(common.MsgIdShow, &router.MyBaseRouter{})
 
 	//启动客户端
 	client.Start()
-
 	//防止进程退出，等待中断信号
-	select {}
+	if <-done {
+		return
+	}
 }
