@@ -12,12 +12,16 @@ import (
 
 func main() {
 	server := znet.NewServer()
+
 	server.SetOnConnStart(DoConnectionBegin)
 	server.SetOnConnStop(DoConnectionLost)
+
 	server.AddRouter(common.MsgIdPing, &router.PingRouter{})
 	server.AddRouter(common.MsgIdWho, &router.WhoRouter{})
 	server.AddRouter(common.MsgIdRename, &router.RenameRouter{})
 	server.AddRouter(common.MsgIdPublic, &router.PublicRouter{})
+	server.AddRouter(common.MsgIdPrivate, &router.PrivateRouter{})
+
 	server.Serve()
 }
 

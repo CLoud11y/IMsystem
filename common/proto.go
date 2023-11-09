@@ -6,6 +6,7 @@ const (
 	MsgIdWho
 	MsgIdRename
 	MsgIdPublic
+	MsgIdPrivate
 	// server to client
 	MsgIdShow
 )
@@ -15,10 +16,11 @@ var InstructionMap map[string]uint32
 
 func init() {
 	m := map[string]uint32{
-		"ping":   MsgIdPing,
-		"who":    MsgIdWho,
-		"rename": MsgIdRename,
-		"public": MsgIdPublic,
+		"ping":    MsgIdPing,
+		"who":     MsgIdWho,
+		"rename":  MsgIdRename,
+		"public":  MsgIdPublic,
+		"private": MsgIdPrivate,
 	}
 	InstructionMap = m
 }

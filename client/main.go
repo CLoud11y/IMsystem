@@ -3,30 +3,36 @@ package main
 import (
 	"IM_System/client/router"
 	"IM_System/common"
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/aceld/zinx/ziface"
 	"github.com/aceld/zinx/znet"
 )
 
-// 客户端自定义业务
+// 等待客户端输入指令
 func waitingInput(conn ziface.IConnection) {
+	reader := bufio.NewReader(os.Stdin)
 	for {
-		var input string
-		n, _ := fmt.Scanln(&input)
-		if n == 0 {
+		input, _ := reader.ReadString('\n')
+		//去掉末尾'\r\n'
+		input = input[:len(input)-2]
+		if input == "" {
 			continue
 		}
+		fmt.Println("input:", input, "len:", len(input))
 		splited := strings.Split(input, "|")
 		instruction := splited[0]
+		// 私聊命令格式为private|<name>|msg
 		msgId, ok := common.InstructionMap[instruction]
 		if !ok {
 			continue
 		}
 		msg := ""
 		if len(splited) > 1 {
-			msg = strings.Join(splited[1:], " ")
+			msg = strings.Join(splited[1:], "|")
 		}
 		err := conn.SendMsg(msgId, []byte(msg))
 		if err != nil {
