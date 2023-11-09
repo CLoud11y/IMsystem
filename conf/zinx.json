@@ -1,0 +1,10 @@
+{
+    "Name":"IMSYSTEM",
+    "Host":"127.0.0.1",
+    "TcpPort":8888,
+    "MaxConn":5,
+    "WorkerPoolSize":10,
+    "LogDir": "./mylog",
+    "LogFile":"system.log",
+    "LogDebugClose":true
+}
