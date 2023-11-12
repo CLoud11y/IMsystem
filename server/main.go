@@ -26,7 +26,7 @@ func main() {
 }
 
 func DoConnectionBegin(conn ziface.IConnection) {
-	user := usr.NewUser(conn.RemoteAddrString(), conn)
+	user := usr.NewUser(conn.RemoteAddrString(), conn, "")
 	conn.SetProperty("user", user)
 	// 先addUser再broadcast 这样用户自己也能收到广播
 	usr.UserManager.AddUser(user)

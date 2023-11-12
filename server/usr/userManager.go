@@ -1,20 +1,33 @@
 package usr
 
 import (
+	"IM_System/conf"
 	"fmt"
 	"sync"
+
+	"gorm.io/gorm"
 )
 
 type userManager struct {
 	onlineMap map[string]*User
 	mapLock   sync.RWMutex
+
+	db *gorm.DB
 }
 
 var UserManager *userManager
 
 func init() {
+	// 初始化数据库连接
+	DB, err := gorm.Open(conf.MysqlConf, conf.GormConf)
+	if err != nil {
+		panic(err)
+	}
+	DB.AutoMigrate(&User{})
+
 	UserManager = &userManager{
 		onlineMap: map[string]*User{},
+		db:        DB,
 	}
 }
 
