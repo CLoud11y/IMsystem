@@ -21,15 +21,16 @@ func main() {
 	server.AddRouter(common.MsgIdRename, &router.RenameRouter{})
 	server.AddRouter(common.MsgIdPublic, &router.PublicRouter{})
 	server.AddRouter(common.MsgIdPrivate, &router.PrivateRouter{})
+	server.AddRouter(common.MsgIdLogin, &router.LoginRouter{})
 
 	server.Serve()
 }
 
 func DoConnectionBegin(conn ziface.IConnection) {
-	user := usr.NewUser(conn.RemoteAddrString(), conn, "")
+	user := usr.NewUser(conn.RemoteAddrString(), conn, "", false)
 	conn.SetProperty("user", user)
 	// 先addUser再broadcast 这样用户自己也能收到广播
-	usr.UserManager.AddUser(user)
+	usr.UserManager.AddOnlineUser(user)
 	fmt.Println(user.Name + " is online")
 	go Broadcast(user.Name + " is online")
 }
@@ -41,13 +42,13 @@ func DoConnectionLost(conn ziface.IConnection) {
 	}
 	//TODO
 	u := user.(*usr.User)
-	usr.UserManager.RemoveUser(u)
+	usr.UserManager.RemoveOnlineUser(u)
 	fmt.Println(u.Name + " is offline")
 	go Broadcast(u.Name + " is offline")
 }
 
 func Broadcast(msg string) {
-	users := usr.UserManager.GetAllUsers()
+	users := usr.UserManager.GetAllOnlineUsers()
 	for _, each := range users {
 		each.Conn.SendMsg(common.MsgIdShow, []byte(msg))
 	}

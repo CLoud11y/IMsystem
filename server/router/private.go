@@ -11,7 +11,7 @@ import (
 
 // PingRouter MsgIdPing路由
 type PrivateRouter struct {
-	MyBaseRouter
+	AuthRouter
 }
 
 func (r *PrivateRouter) Handle(request ziface.IRequest) {
@@ -30,7 +30,7 @@ func (r *PrivateRouter) Handle(request ziface.IRequest) {
 	user := u.(*usr.User)
 	msg := "[private] " + user.Name + ": " + content
 	//将信息发送给目标用户
-	targetUser, ok := usr.UserManager.GetUserByName(targetName)
+	targetUser, ok := usr.UserManager.GetOnlineUserByName(targetName)
 	if ok {
 		targetUser.Conn.SendMsg(common.MsgIdShow, []byte(msg))
 	} else {

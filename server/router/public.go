@@ -10,7 +10,7 @@ import (
 
 // PingRouter MsgIdPing路由
 type PublicRouter struct {
-	MyBaseRouter
+	AuthRouter
 }
 
 func (r *PublicRouter) Handle(request ziface.IRequest) {
@@ -22,7 +22,7 @@ func (r *PublicRouter) Handle(request ziface.IRequest) {
 	user := u.(*usr.User)
 	msg := "[public] " + user.Name + ": " + string(request.GetData())
 	//将信息发送给全部在线用户
-	users := usr.UserManager.GetAllUsers()
+	users := usr.UserManager.GetAllOnlineUsers()
 	for _, each := range users {
 		each.Conn.SendMsg(common.MsgIdShow, []byte(msg))
 	}

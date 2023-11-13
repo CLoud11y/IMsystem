@@ -8,7 +8,7 @@ import (
 
 // PingRouter MsgIdPing路由
 type PingRouter struct {
-	MyBaseRouter
+	AuthRouter
 }
 
 func (r *PingRouter) Handle(request ziface.IRequest) {

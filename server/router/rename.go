@@ -10,7 +10,7 @@ import (
 
 // PingRouter MsgIdPing路由
 type RenameRouter struct {
-	MyBaseRouter
+	AuthRouter
 }
 
 func (r *RenameRouter) Handle(request ziface.IRequest) {
