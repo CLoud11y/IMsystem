@@ -17,17 +17,18 @@ func waitingInput(conn ziface.IConnection) {
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		input, _ := reader.ReadString('\n')
-		//去掉末尾'\r\n'
+		//去掉末尾'\r\n' (windows中回车符为\r\n)
 		input = input[:len(input)-2]
 		if input == "" {
 			continue
 		}
-		fmt.Println("input:", input, "len:", len(input))
+		fmt.Printf("<input: %s, len: %d>\n", input, len(input))
 		splited := strings.Split(input, "|")
 		instruction := splited[0]
 		// 私聊命令格式为private|<name>|msg
 		msgId, ok := common.InstructionMap[instruction]
 		if !ok {
+			fmt.Println("invalid instruction:", instruction)
 			continue
 		}
 		msg := ""
