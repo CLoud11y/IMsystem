@@ -2,6 +2,8 @@ package usr
 
 import (
 	"IM_System/conf"
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"sync"
 
@@ -42,7 +44,10 @@ func (um *userManager) Login(user *User, userName string, password string) strin
 		return msg
 	}
 
-	if password != tempUser.Password {
+	h := md5.New()
+	h.Write([]byte(password))
+	md5_password := hex.EncodeToString(h.Sum(nil))
+	if md5_password != tempUser.Password {
 		return "password err"
 	}
 

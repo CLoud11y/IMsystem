@@ -20,7 +20,7 @@ func init() {
 	Dbname := "IMsystem"             //数据库名
 
 	if password == "" {
-		fmt.Println("the password is empty!")
+		fmt.Println("the database password is empty!")
 	}
 	//拼接dsn参数
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, Dbname)
