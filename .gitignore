@@ -20,5 +20,8 @@
 # Go workspace file
 go.work
 
-#log file
+# log file
 /mylog
+
+# env file
+*.env
