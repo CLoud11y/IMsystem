@@ -12,7 +12,7 @@ import (
 	"github.com/aceld/zinx/znet"
 )
 
-// 等待客户端输入指令
+// 等待客户端输入指令 调整消息格式
 func waitingInput(conn ziface.IConnection) {
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -25,7 +25,7 @@ func waitingInput(conn ziface.IConnection) {
 		fmt.Printf("<input: %s, len: %d>\n", input, len(input))
 		splited := strings.Split(input, "|")
 		instruction := splited[0]
-		// 私聊命令格式为private|<name>|msg
+		// 用instructionmap找到对应的msgId
 		msgId, ok := common.InstructionMap[instruction]
 		if !ok {
 			fmt.Println("invalid instruction:", instruction)
@@ -62,7 +62,7 @@ func init() {
 }
 
 func main() {
-	//创建Client客户端
+	//创建Client客户端 需要服务器ip和端口
 	client := znet.NewClient("127.0.0.1", 8888)
 
 	//设置链接建立成功后的钩子函数

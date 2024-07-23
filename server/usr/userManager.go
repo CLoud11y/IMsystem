@@ -2,8 +2,7 @@ package usr
 
 import (
 	"IM_System/conf"
-	"crypto/md5"
-	"encoding/hex"
+	"IM_System/utils"
 	"fmt"
 	"sync"
 
@@ -34,21 +33,23 @@ func init() {
 }
 
 func (um *userManager) Login(user *User, userName string, password string) string {
+	//检查在线用户中是否已经存在
+	if _, ok := um.GetOnlineUserByName(userName); ok {
+		return "login fail:" + userName + " is already online"
+	}
 	tempUser := &User{}
 	err := um.db.Where("name = ?", userName).First(tempUser).Error
 	if err != nil {
-		msg := "login fail"
+		msg := "login fail:"
 		if err == gorm.ErrRecordNotFound {
-			msg = "userName: " + userName + " not found"
+			msg += " userName: " + userName + " not found"
 		}
 		return msg
 	}
-
-	h := md5.New()
-	h.Write([]byte(password))
-	md5_password := hex.EncodeToString(h.Sum(nil))
+	// 检查密码
+	md5_password := utils.Encrypt(password)
 	if md5_password != tempUser.Password {
-		return "password err"
+		return "login fail: password err"
 	}
 
 	// 用户名密码正确 成功登录
@@ -63,6 +64,26 @@ func (um *userManager) Login(user *User, userName string, password string) strin
 
 	um.mapLock.Unlock()
 	return "login success"
+}
+
+func (um *userManager) Signup(user *User, userName string, password string) string {
+	// 检查用户名是否已存在
+	tempUser := &User{}
+	err := um.db.Where("name = ?", userName).First(tempUser).Error
+	// 用户已存在
+	if err == nil {
+		return "login fail: userName: " + userName + " exists"
+	}
+	// 发生未知错误
+	if err != gorm.ErrRecordNotFound {
+		return err.Error()
+	}
+	// 正常注册流程
+	tempUser.Name = userName
+	tempUser.Password = utils.Encrypt(password)
+	um.db.Save(&tempUser)
+
+	return "signup success, please login"
 }
 
 func (um *userManager) AddOnlineUser(user *User) {

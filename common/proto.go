@@ -8,6 +8,7 @@ const (
 	MsgIdPublic
 	MsgIdPrivate
 	MsgIdLogin
+	MsgIdSignup
 	// server to client
 	MsgIdShow
 )
@@ -23,6 +24,7 @@ func init() {
 		"public":  MsgIdPublic,
 		"private": MsgIdPrivate,
 		"login":   MsgIdLogin,
+		"signup":  MsgIdSignup,
 	}
 	InstructionMap = m
 }

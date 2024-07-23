@@ -22,6 +22,7 @@ func main() {
 	server.AddRouter(common.MsgIdPublic, &router.PublicRouter{})
 	server.AddRouter(common.MsgIdPrivate, &router.PrivateRouter{})
 	server.AddRouter(common.MsgIdLogin, &router.LoginRouter{})
+	server.AddRouter(common.MsgIdSignup, &router.SignupRouter{})
 
 	server.Serve()
 }
